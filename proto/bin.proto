@@ -1,0 +1,269 @@
+syntax = "proto3";
+option go_package = ".";
+option java_package = "com.binchekr";
+package proto;
+
+service RPC {
+
+  rpc send_Feedback(FeedbackRequest) returns (Message) {}
+  rpc report(ReportRequest) returns (Message) {}
+  rpc set_fav(Fav) returns (Message) {}
+  rpc get_fav(FavRequest) returns (FavList) {}
+  rpc add_bin(ReportRequest) returns (Message) {}
+
+  rpc set_List(Save) returns (Message) {}
+  rpc get_List(Save) returns (SaveList) {}
+  rpc stat(StatReq) returns (StatResponse) {}
+
+
+
+  rpc delete_history(HistoryRequest) returns (Message) {}
+  rpc get_history(HistoryRequest) returns (HistoryResponse) {}
+
+
+
+  rpc GetImage(ImageRequest) returns (ImageResponse) {}
+
+  rpc find_Bin(SearchRequest) returns (BinList) {}
+  rpc lookup(BinRequest) returns (Bin) {}
+  rpc bulk_lookup(BulkRequest) returns (stream Bin) {}
+  rpc DynamicFilter(SearchRequest) returns (TypeResponse) {}
+  rpc DynamicBanks(SearchRequest) returns (IssuerResponse) {}
+
+  rpc get_token(TokenRequest) returns (TokenResponse) {}
+  rpc is_premium(IsPremiumRequest) returns (IsPremiumResponse) {}
+
+  // deprecated
+  rpc get_account(AccountRequest) returns (AccountResponse) {}
+
+  // removed further
+  rpc lookup_6digit_bin(Bin6digitRequest) returns (Bin6digit) {}
+  rpc find_6digit_bin(Search6digitRequest) returns (BinList6digit) {}
+  rpc dynamic_filter_6digit(Search6digitRequest) returns (TypeResponse) {}
+  rpc dynamic_banks_6digit(Search6digitRequest) returns (IssuerResponse) {}
+  rpc log(BinRequest) returns (Message) {}
+
+
+}
+
+message FavRequest{}
+
+
+message IsPremiumRequest {}
+message IsPremiumResponse {
+  bool premium = 1;
+  int64 expire = 2;
+}
+
+message TokenRequest {
+  string email = 1;
+  string name = 2;
+  string image = 3;
+  string locate = 4;
+  string token = 5;
+}
+
+message TokenResponse {
+  Message message = 1;
+  string token = 2;
+}
+
+message HistoryResponse{
+  repeated Stat history = 1;
+}
+
+message BulkRequest {
+  repeated int64 bin = 1;
+  bool incognito = 2;
+}
+message HistoryRequest {}
+
+message Image { string image = 1; }
+message ImageRequest { string country = 1; }
+message ImageResponse {
+  string image = 1;
+  string source = 2;
+}
+
+message BinList {
+  repeated Bin binlist = 1;
+  int32 currentPage = 2;
+}
+message TypeResponse {
+  repeated string Network = 1;
+  repeated string Product = 2;
+  repeated string Type = 3;
+  repeated string Country = 4;
+}
+
+message IssuerResponse { repeated string Issuer = 1; }
+
+message Fav {
+  enum What {
+    ADD = 0;
+    DELETE = 1;
+  }
+  int64 bin = 1;
+  What what = 2;
+}
+message FavList { repeated int64 bin = 1; }
+
+message Save {
+  string uuid = 1;
+  string name = 2;
+  repeated int64 bins = 3;
+  enum What {
+    ADD_LIST = 0;
+    DELETE_LIST = 1;
+    ADD_BIN_T0_LIST = 2;
+    DELETE_BIN_FROM_LIST = 3;
+    RENAME_LIST = 4;
+  }
+  What what = 4;
+}
+message SaveList { repeated Save save = 1; }
+message BinRequest {
+  int64 bin = 1;
+  int64 from = 2;
+  bool timezone = 3;
+  bool incognito = 4;
+}
+message ReportRequest {
+  int64 bin = 1;
+  string type = 2;
+  string network = 3;
+  string product_name = 4;
+  string issuer = 5;
+  string country = 6;
+  string text = 7;
+}
+
+message Bin {
+  int64 start = 1;
+  int64 end = 2;
+  string cvvType = 3;
+  int32 cvvLength = 4;
+  string NiceNetwork = 5;
+  repeated int32 length = 6;
+  string type = 7;
+  string network = 8;
+  string product_name = 9;
+  Issuer issuer = 10;
+  Country country = 11;
+  string info = 12;
+  int64 last_updated = 13;
+}
+
+
+message Issuer {
+  string name = 1;
+  string url = 2;
+  string phone = 3;
+  string email = 4;
+  string headquarters = 5;
+  int64 issuer_id = 6;
+}
+message Currency {
+  string name = 1;
+  string code = 2;
+}
+
+message Timezone {
+  string ianaTimezone = 1;
+  string Info = 2;
+}
+
+message Country {
+  string name = 1;
+  string alpha2 = 2;
+  string capital = 3;
+  string emoji = 4;
+  string region = 5;
+  string language = 6;
+  repeated Timezone locates = 7;
+  int32 callingCode = 8;
+  Currency currency = 9;
+  string start_of_the_week = 10;
+  string postalCodeFormat = 11;
+  int64 numeric = 12;
+  string alpha3 = 13;
+}
+
+message SearchRequest {
+  int64 bin = 1;
+  string type = 2;
+  string network = 3;
+  string product_name = 4;
+  string issuer = 5;
+  string country = 6;
+  int32 page = 7;
+  int64 from = 8;
+}
+
+
+message Message {
+  bool status = 1;
+  string message = 2;
+}
+
+message Stat {
+  int64 bin = 1;
+  int64 at = 2;
+}
+
+message Stats {
+  int64 bin = 1;
+  int32 count = 2;
+}
+
+message StatMap {
+  string name = 1;
+  repeated int64 data = 2;
+}
+message StatResponse { repeated StatMap data = 1; }
+
+message StatReq { string country = 1; }
+
+message FeedbackRequest {
+  int64 bin = 1;
+  int32 feedback = 2;
+}
+
+
+
+// deprecated
+message AccountRequest {}
+message AccountResponse {
+  repeated Stat history = 1;
+  repeated Save save = 2;
+  repeated int64 fav = 3;
+}
+
+message Bin6digitRequest {
+  int64 bin = 1;
+  int64 from = 2;
+  bool timezone = 3;
+  bool incognito = 4;
+}
+message Bin6digit {
+  int64 bin = 1;
+  repeated int32 length = 2;
+  string type = 3;
+  string network = 4;
+  string product_name = 5;
+  string issuer = 6;
+  Country country = 7;
+}
+message Search6digitRequest {
+  int64 bin = 1;
+  string type = 2;
+  string network = 3;
+  string product_name = 4;
+  string issuer = 5;
+  string country = 6;
+  int32 page = 7;
+}
+message BinList6digit {
+  repeated Bin6digit binlist = 1;
+  int32 currentPage = 2;
+}

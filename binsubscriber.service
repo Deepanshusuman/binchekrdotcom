@@ -1,0 +1,12 @@
+[Unit]
+Description=Bin Subscriber Service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1s
+WorkingDirectory=/root/binchecker/_work/binchecker/binchecker/subscriber/
+ExecStart=/root/binchecker/_work/binchecker/binchecker/subscriber/main
+
+[Install]
+WantedBy=multi-user.target

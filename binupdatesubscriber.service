@@ -1,0 +1,12 @@
+[Unit]
+Description=Bin Update Service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1s
+WorkingDirectory=/root/binchecker/_work/binchecker/binchecker/updatesubscriber/
+ExecStart=/root/binchecker/_work/binchecker/binchecker/updatesubscriber/main
+
+[Install]
+WantedBy=multi-user.target

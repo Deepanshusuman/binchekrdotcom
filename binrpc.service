@@ -1,0 +1,12 @@
+[Unit]
+Description=Binchekr Rpc Server
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1s
+WorkingDirectory=/root/binchecker/_work/binchecker/binchecker/
+ExecStart=/root/binchecker/_work/binchecker/binchecker/main
+
+[Install]
+WantedBy=multi-user.target
