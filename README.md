@@ -5,7 +5,7 @@
 2. Binlist.net
 3. API
 
-# bin data is in dump.sql
+# bin data at https://drive.google.com/file/d/1r-JLXCOA7qtyLlvsOL2XIYyqMLdS-OTt/view
 
 # Installation
 
